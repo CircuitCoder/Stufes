@@ -1,64 +1,76 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<!--SHOP MANAGER SCANNING PAGE-->
-<!--This Page Is Made BY C141028潘瑞哲-->
-<!--指导教师：王田 段晨-->
-<!--前端：C141028潘瑞哲-->
-<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>扫描页面</title>
-<script>
-function isWeiXin(){
-    var ua = navigator.userAgent.toLowerCase();
-    if(ua.match(/MicroMessenger/i)=="micromessenger") {
-        return true;
-    } else {
-        return false;
-    }
-	}
-	if(isWeiXin()){
-		//alert(isWeiXin());
-		var result;
-	wx.scanQRCode({
-		needResult: 1,
-		scanType: ["qrCode","barCode"],
-		success: function (res) {
-			result = res.resultStr;
-			Jump(result); } });}else{
-				alert("不是微信浏览器。请使用微信浏览器打开。");
-				window.setTimeout("window.close()",800);
-				}
-function Jump(weburl){
-	var head=isNaN(weburl);
-	if(head==false){
-		var xmlhttp,result;
-if (window.XMLHttpRequest){
-	xmlhttp=new XMLHttpRequest();
-}else{
-	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
-		xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    var visit=xmlhttp.responseText;
-    }
-  };
-    xmlhttp.open("GET","/visitors/inc",true);
-    xmlhttp.send();
-	if (visit==200||visit=="200"){//录入成功，人数+1
-window.location.href="s1.html?weburl="+weburl;
-	}
-}else{
-	document.getElementById("a").innerHTML="<p style='color:#000000'>不是正确的二维码：格式不正确或这不是正确的手机。如果是后者，联系技术支持。</p><input name='请重试' type='button' onClick='Scan()' value='请重试' />"; } }
-</script>
-<noscript>
-对不起，您的浏览器不支持JavaScript。
-</noscript>
-</head>
+  <!--SHOP MANAGER SCANNING PAGE-->
+  <!--This Page Is Made BY C141028潘瑞哲-->
+  <!--指导教师：王田 段晨-->
+  <!--前端：C141028潘瑞哲-->
+  <!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>扫描页面</title>
+    <script>
+      function isWeiXin(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+          return true;
+          } else {
+          return false;
+        }
+      }
 
-<body>
-<h3 id="a" style=""><p style='color:#000000'></h3>
-</body>
+      function Jump(weburl){
+        var head=isNaN(weburl);
+
+        if(!head) {
+          var xmlhttp, visit;
+          if (window.XMLHttpRequest){
+            xmlhttp=new XMLHttpRequest();
+          }else{
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          xmlhttp.onreadystatechange=function()
+          {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+              visit=xmlhttp.responseText;
+            }
+          };
+          xmlhttp.open("GET","/visitors/inc",true);
+          xmlhttp.send();
+
+          if (visit==200) { //录入成功，人数+1
+            window.location.href="s1.html?weburl="+weburl;
+            //TODO: Don't need to scan again
+          }
+        } else {
+          document.getElementById("a").innerHTML="<p style='color:#000000'>不是正确的二维码：格式不正确或这不是正确的手机。如果是后者，联系技术支持。</p><input name='请重试' type='button' onClick='Scan()' value='请重试' />";
+        }
+      }
+
+      function Scan() {
+        if(isWeiXin()){
+          var result;
+
+          wx.scanQRCode({
+            needResult: 1,
+            scanType: ["qrCode","barCode"],
+            success: function (res) {
+              result = res.resultStr;
+              Jump(result);
+            }
+          });
+        } else {
+          alert("不是微信浏览器。请使用微信浏览器打开。");
+          window.setTimeout(window.close,800);
+        }
+      }
+    </script>
+    <noscript>
+      对不起，您的浏览器不支持JavaScript。
+    </noscript>
+  </head>
+
+  <body>
+    <h3 id="a" style=""><p style='color:#000000'></h3>
+  </body>
 </html>

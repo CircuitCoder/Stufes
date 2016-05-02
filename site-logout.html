@@ -1,48 +1,54 @@
 <!--site_Logout-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--This Page Is Made BY C141028潘瑞哲-->
-<!--指导教师：王田 段晨-->
-<!--前端：C141028潘瑞哲-->
-<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
-<title>摊位登出</title>
-<script>
-var xmlhttp;
-if (window.XMLHttpRequest){
-    xmlhttp=new XMLHttpRequest();
-}
-else{
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    var result=xmlhttp.responseText;
-    }
-};
-xmlhttp.open("GET","/account/logout",true);
-xmlhttp.send();
-if(result.success==false||result.success=="false"||result.success=="False"||result.success=="FALSE"){
-		if(result.error=="NotLoggedIn"){
-			alert("登出失败。原因：该设备之前并未登录。");
-		}else{
-			alert("登出失败。原因：未知错误（Error="+result.error+"）. 这可能是由于网络异常或服务器繁忙导致的。");
-		}
-	}else if(result.success==true||result.success=="true"||result.success=="True"||result.success=="TRUE"){
-		alert("登出成功！");
-	}else{
-		alert("网络异常。请重试。");
-	}
-window.location.href="Scan page.html";
-</script>
-<noscript>
-对不起，您的浏览器不支持JavaScript。
-</noscript>
-</head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--This Page Is Made BY C141028潘瑞哲-->
+    <!--指导教师：王田 段晨-->
+    <!--前端：C141028潘瑞哲-->
+    <!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+    <title>摊位登出</title>
+    <script>
+      var xmlhttp, result;
+      if (window.XMLHttpRequest){
+        xmlhttp=new XMLHttpRequest();
+      }
+      else{
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange=function()
+      {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+          try {
+            result = JSON.parse(xmlhttp.responseText);
+          } catch(e) {
+            result = { success: false };
+          }
+        }
+      };
 
-<body>
-</body>
+      xmlhttp.open("GET","/account/logout",true);
+      xmlhttp.send();
+
+      if(!result.success) {
+        if(result.error=="NotLoggedIn"){
+          alert("登出失败。原因：该设备之前并未登录。");
+        } else {
+          alert("登出失败。原因：未知错误（Error="+result.error+"）. 这可能是由于网络异常或服务器繁忙导致的。");
+        }
+      } else {
+        alert("登出成功！");
+        window.location.href="site-login.html";
+      }else{
+        alert("网络异常。请重试。");
+      }
+    </script>
+    <noscript>
+      对不起，您的浏览器不支持JavaScript。
+    </noscript>
+  </head>
+
+  <body>
+  </body>
 </html>
