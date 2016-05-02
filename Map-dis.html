@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--Map 静态-->
+<!--This Page Is Made BY C1410潘瑞哲-->
+<!--指导教师：王田 段晨-->
+<!--前端：C1410潘瑞哲-->
+<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>静态地图</title>
+<script>
+var xmlhttp,i,out;
+out="<p style='color:#33FF99'>";
+if (window.XMLHttpRequest){
+    xmlhttp=new XMLHttpRequest();
+}
+else{
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    	var result=xmlhttp.responseText;
+    }else if(xmlhttp.status==403){
+		var result=[
+		              {
+						  name:"403 Forbidden",
+						  class:"403 Forbidden",
+						  category:"403 Forbidden",
+						  position:"403 Forbidden",
+						  description:"403 Forbidden"
+					  }
+				   ]
+	}else{
+		/*var result=[
+		              {
+						  name:"404 Not Found or Something Else",
+						  class:"404 Not Found or Something Else",
+						  category:"404 Not Found or Something Else",
+						  position:"404 Not Found or Something Else",
+						  description:"404 Not Found or Something Else"
+					  }
+				   ]*/
+	}
+};
+xmlhttp.open("GET","/map/sites",true);
+xmlhttp.send();
+for(i=0;i<=result.length;i++){
+		out=out+"摊位名称："+result[i].name+"&nbsp;&nbsp;所属班级："+result[i].class+"&nbsp;&nbsp;所属类别："+result[i].category+"&nbsp;&nbsp;所在地点："+result[i].position+"&nbsp;&nbsp;摊位简介："+result[i].description+"<br />";
+	}
+out=out+"</p>";
+document.getElementById("a").innerHTML=out;
+</script>
+<noscript>
+对不起，您的浏览器不支持JavaScript。
+</noscript>
+</head>
+
+<body>
+<h4 id="a"></h4>
+</body>
+</html>

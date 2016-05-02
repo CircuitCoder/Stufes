@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!--排行榜-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>排行榜</title>
+<!--This Page Is Made BY C141028潘瑞哲-->
+<!--指导教师：王田 段晨-->
+<!--前端：C141028潘瑞哲-->
+<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+<script>
+var xmlhttp,num,i,j;
+num=10;
+var give=window.location.href.split(".html?")[1];
+//alert(give);
+if(give!="" && isNaN(give)==false && give!=undefined){
+	if(give>0&&give<=6000){
+		num=give;
+	}else{
+		var an=confirm("您传入的值 "+give+" 超出范围，查询失败。");
+		if(!an){
+			window.location.href="http://www.qhfz.edu.cn/";
+		}else{
+			alert("现在将显示前十名的积分。");
+		}
+	}
+}
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var result=xmlhttp.responseText;
+    }
+};
+xmlhttp.open("GET","/score/leaders/"+num,true);
+xmlhttp.send();
+var out="<p>";
+for(i=0;i<=result.length;i++){
+	out=out+"第 "+(i+1)+" 名：&nbsp;"+result[i].name+"&nbsp;&nbsp;"+result[i].score+"分<br/>";
+}
+out=out+"</p>";
+document.getElementById("result").innerHTML=out;
+document.getElementById("a").innerHTML="<p>高分排行榜：前"+num+"名</p>";
+var sout="<p>";
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var sresult=xmlhttp.responseText;
+    }
+};
+for(j=0;ij<=result.length;j++){
+	sout=sout+"第 "+(i+1)+" 名：&nbsp;"+result[i].name+"&nbsp;&nbsp;"+result[i].score+"分<br/>";
+}
+xmlhttp.open("GET","/score/trends/"+num,true);
+xmlhttp.send();
+document.getElementById("sresult").innerHTML=sout;
+document.getElementById("b").innerHTML="<p>增长速度排行榜：前"+num+"名</p>";
+</script>
+<noscript>
+<p style="color:#CF0">对不起，您的浏览器不支持JavaScript或者并未启用JavaScript脚本。</p>
+</noscript>
+</head>
+
+<body>
+<h4 id="a">高分排行榜：<p style="color:#F00">错误：未能连接到服务器。</p></h4>
+<h5 style="color:#30F" id="result"></h5>
+<br/>
+<h4 id="b">增长速度排行榜：<p style="color:#F00">错误：未能连接到服务器。</p></h4>
+<h5 style="color:#399" id="sresult"></h5>
+<br/>
+</body>
+</html>

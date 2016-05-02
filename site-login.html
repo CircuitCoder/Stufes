@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--当site的session丢失-->
+<head>
+<!--This Page Is Made BY C141028潘瑞哲-->
+<!--指导教师：王田 段晨-->
+<!--前端：C141028潘瑞哲-->
+<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>摊位录入</title>
+<script>
+var i=1;
+for(i=1;i>=1;i++){
+var username=prompt("请输入用户名：");
+var password=prompt("请输入密码：");
+//var site=prompt("请输入摊位编号：");
+var xmlhttp;
+if (window.XMLHttpRequest){
+    xmlhttp=new XMLHttpRequest();
+}
+else{
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var result=xmlhttp.responseText;
+    }
+};
+xmlhttp.open("POST","/account/login",true);
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlhttp.send("username="+username+"&password="+password);
+if(result.success==false||result.success=="false"||result.success=="False"||result.success=="FALSE"){
+		switch (result.error){
+			case "CredentialsRejected":
+				var an=confirm("凭证错误。重新输入？");
+				if(!an){
+						i=-1;
+					}
+			break;
+			case "AlreadyLoggedIn":
+				var an=prompt("您已经录入成功，请勿重复录入。\n继续录入别的site吗？");
+				if(!an){
+					i=-1;
+				}
+			break;
+			case "AccountInUse":
+			    var an=prompt("已经有别的设备使用了这个凭证。\n继续录入别的site吗？");
+				if(!an){
+					i=-1;
+				}
+			break;
+			default:
+			    var an=prompt("录入失败。出现未知错误："+result.error+" . 这可能是因为网络问题或者服务器过于繁忙导致。请稍后再试。\n现在重试吗？");
+				if(!an){
+					i=-1;
+				}
+			break;
+		}
+	}else if(result.success==true||result.success=="true"||result.success=="True"||result.success=="TRUE"){
+			i=-1;
+			alert("site"+result.site+"录入成功！");
+		}
+}
+</script>
+<noscript>
+对不起，您的浏览器不支持JavaScript。
+</noscript>
+</head>
+<body>
+</body>
+</html>

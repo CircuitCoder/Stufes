@@ -1,0 +1,55 @@
+<!--site.html-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!--This Page Is Made BY C141028潘瑞哲-->
+<!--指导教师：王田 段晨-->
+<!--前端：C141028潘瑞哲-->
+<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>摊位信息</title>
+<script>
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+{
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var result="<p style='color:#32CD32>访客数： '"+xmlhttp.responseText+" 人。</p>";
+    }else if (xmlhttp.status==403){
+	var result="<p style='color:#FF0000'>403 Forbidden. 无法确定摊位编号。</p>";
+	}else if (xmlhttp.status==404){
+	var result="<p style='color:#FF0000'>404 Not Found. 未能连接到服务器。</p>";
+	}
+};
+    xmlhttp.open("GET","/visitors/",true);
+    xmlhttp.send();
+	document.getElementById("visitors").InnerHTML=result;
+	function Average(){
+		xmlhttp.onreadystatechange=function()
+{
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var aresult="<p style='color:#3399FF>平均打分： '"+Math.floor(xmlhttp.responseText.tot/xmlhttp.responseText.count*10)/10+" 分</p>";
+    }
+};
+    xmlhttp.open("GET","/vote/",true);
+    xmlhttp.send();
+		}
+</script>
+<noscript>
+您的浏览器可能不支持JavaScript。
+</noscript>
+</head>
+
+<body>
+<center><h3 id="visitors"></h3></center>
+</body>
+</html>

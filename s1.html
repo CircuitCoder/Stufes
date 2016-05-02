@@ -1,0 +1,50 @@
+<!--WHEN SHOP MANAGER SCAN THE QRCODE -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--This Page Is Made BY C141028潘瑞哲-->
+<!--指导教师：王田 段晨-->
+<!--前端：C141028潘瑞哲-->
+<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+<title>无标题文档</title>
+<script>
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+var weburl=window.location.href.split("?weburl=")[1];
+if (isNaN(weburl)==false){
+	xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var result=xmlhttp.responseText;
+    }
+  };
+    xmlhttp.open("GET","/visit/"+weburl,true);//见workflow
+    xmlhttp.send();
+	if(result==0){//没有评过分
+		window.location.href="score.html?id="+weburl;//跳转至评分界面。
+	}else{
+		alert("已经评过分了，去别的地方转转吧。");
+		window.location.href="Scan Page.html";//返回扫描页面
+	}
+}else{
+	alert("参数错误。");
+	window.location.href="Scan Page.html";
+}
+</script>
+<noscript>
+对不起，您的浏览器不支持JavaScript。
+</noscript>
+</head>
+
+<body>
+</body>
+</html>

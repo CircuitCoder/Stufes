@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--亮灯查询Page-->
+<!--This Page Is Made BY C141028潘瑞哲-->
+<!--指导教师：王田 段晨-->
+<!--前端：C141028潘瑞哲-->
+<!--后端：G14刘晓义 G15武钰淞 G15陈祥 等-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>点亮的灯</title>
+<script>
+wx.scanQRCode({ needResult: 1, scanType: ["qrCode","barCode"], success: function (res) { result = res.resultStr; } });
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+if (isNaN(result)==false){
+  xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    var xresult=xmlhttp.responseText;
+    }
+  };
+    xmlhttp.open("GET","/lamps/"+result,true);
+    xmlhttp.send();
+}
+var all=false;
+if(xresult!=0){
+	switch(xresult){
+		case 1:
+		case "1":
+		document.getElementById("lamp").innerHTML="<img src='1.jpg'/>";
+		break;
+		case 2:
+		case "2":
+		document.getElementById("lamp").innerHTML="<img src='2.jpg'/>";
+		break;
+		case 3:
+		case "3":
+		document.getElementById("lamp").innerHTML="<img src='3.jpg'/>";
+		break;
+		case 4:
+		case "4":
+		document.getElementById("lamp").innerHTML="<img src='.4.jpg'/>";
+		all=true;
+		break;
+		case undefined:
+		case "undefined":
+		case Null:
+		case "":
+		document.write("错误：返回值不可被识别。");
+		break;
+		case 403:
+		case "403":
+		document.write("403 Forbidden：您没有权限访问服务器或服务器正忙。请重试。");
+		break;
+		}
+	}else{
+		document.getElementById("lamp").innerHTML="<img src='0.jpg'/><p style='color:#6699CC'>您还没有收集到任何的灯，再去逛逛吧。</p>";
+	}
+if (all){
+	document.getElementById("all").innerHTML="您已集齐了所有的灯。请去工作站按照指示兑换奖品。"
+	}
+</script>
+<noscript>
+对不起，您的浏览器不支持JavaScript。
+</noscript>
+</head>
+
+<body>
+<h3 style="color:#03C" id="all"></h3>
+</body>
+</html>
